@@ -12,31 +12,21 @@ import (
 func showIndexPage(c *gin.Context) {
 	articles := getAllArticles()
 
-	// Вызовем метод HTML  из контекста Gin
-	// Для обработки шаблона
-
-	c.HTML(
-		http.StatusOK,
-		"index.html",
-		gin.H{
-			"title":   "Home Page",
-			"payload": articles,
-		},
-	)
+	// Call the render function with the name of the template to render
+	render(c, gin.H{
+		"title":   "Home Page",
+		"payload": articles,
+	}, "index.html")
 }
 
 func getArticle(c *gin.Context) {
 	// validity ID
 	if articleID, err := strconv.Atoi(c.Param("article_id")); err == nil {
 		if article, err := getArticleByID(articleID); err == nil {
-			c.HTML(
-				http.StatusOK,
-				"article.html",
-				gin.H{
-					"title":   article.Title,
-					"payload": article,
-				},
-			)
+			render(c, gin.H{
+				"title":   article.Title,
+				"payload": article,
+			}, "article.html")
 		} else {
 			c.AbortWithError(http.StatusNotFound, err)
 		}
