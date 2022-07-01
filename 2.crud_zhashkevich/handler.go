@@ -58,6 +58,13 @@ func (h *Handler) UpdateEmployee(c *gin.Context) {
 	})
 }
 
+func (h *Handler) GetAllEmployees(c *gin.Context) {
+	storageSlice := h.storage.GetAll()
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"employees": storageSlice,
+	})
+}
+
 func (h *Handler) GetEmployee(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

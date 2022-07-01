@@ -18,6 +18,7 @@ type Storage interface {
 	Get(id int) (Employee, error)
 	Update(id int, e Employee)
 	Delete(id int)
+	GetAll() []Employee
 }
 
 type MemoryStorage struct {
@@ -59,6 +60,16 @@ func (s *MemoryStorage) Update(id int, e Employee) {
 	s.Lock()
 	s.data[id] = e
 	s.Unlock()
+}
+
+func (s *MemoryStorage) GetAll() []Employee {
+	s.Lock()
+	emplSlice := make([]Employee, 0)
+	for _, value := range s.data {
+		emplSlice = append(emplSlice, value)
+	}
+	s.Unlock()
+	return emplSlice
 }
 
 func (s *MemoryStorage) Delete(id int) {
